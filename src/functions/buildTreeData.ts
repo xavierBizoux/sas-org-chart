@@ -6,7 +6,7 @@ import defineLevels from "./defineLevels"
 const buildTreeData = (vaData: IVAData) => {
   const data: INode[] = []
   let lastId: number = 0
-  // Check unique root element
+  // Check unique root elements
   const roots: string[] = []
   vaData.data.forEach(el => {
     if (!roots.includes(el[0])) {

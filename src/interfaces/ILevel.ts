@@ -2,7 +2,7 @@ import INode from "./INode"
 
 interface ILevel {
   label: string
-  node: INode | undefined
+  node: INode
 }
 
 export default ILevel

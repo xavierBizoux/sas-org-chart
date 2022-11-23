@@ -17,7 +17,7 @@ const Breadcrumb = ({ path, data, selectionHandler }: IBreadcrumbsProps) => {
     // Define the node which is bound to the breadcrumbs element
     path.forEach((el, idx) => {
       const node: INode | undefined = data.find(node => (node && node.path) ? node.path.concat(node.name).toString() === path.slice(0, idx + 1).toString() : false)
-      const level: ILevel = { "label": el, "node": node, }
+      const level: ILevel = { "label": el, "node": node! }
       breadcrumbs.push(level)
     })
     // Display the breadcrumb element
