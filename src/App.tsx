@@ -87,7 +87,7 @@ const App = () => {
             isSelected={selectedNode === parent}
           ></Node>
         </Grid>
-        { parent?.level && vaData  ? <Divider>{vaData.columns[parent.level +1]['label']}</Divider> : null}
+        { vaData  ? <Divider>{vaData.columns[parent.level +1]['label']}</Divider> : null}
         {children && children.length > 0?
           <Grid container direction="row" alignItems="center" justifyContent="center" sx={{ borderColor: "secondary.main", border: 1, borderRadius: 3 }}>
             {children ? children.map(node => <Node node={node} navigationHandler={navigationHandler} selectionHandler={setSelectedNode} isTop={false} key={node.id} isSelected={selectedNode === node}></Node>) : null}
