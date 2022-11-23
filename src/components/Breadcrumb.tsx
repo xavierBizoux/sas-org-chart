@@ -7,35 +7,39 @@ import INode from '../interfaces/INode'
 interface IBreadcrumbsProps {
   path: string[]
   data: INode[]
-  selectionHandler(node: INode | undefined): void
+  selectionHandler(node: INode): void
 }
 
 const Breadcrumb = ({ path, data, selectionHandler }: IBreadcrumbsProps) => {
   // Define the breadcrumbs elements
   const breadcrumbs: ILevel[] = []
-  // Define the node which is bound to the breadcrumbs element
-  path.forEach((el, idx) => {
-    const node: INode | undefined = data.find(node => (node && node.path) ? node.path.concat(node.name).toString() === path.slice(0, idx + 1).toString() : false)
-    const level: ILevel = { "label": el, "node": node, }
-    breadcrumbs.push(level)
-  })
-  // Display the breadcrumb element
-  return (
-    <Breadcrumbs
-      separator={<NavigateNextIcon fontSize="small" />}
-      aria-label="breadcrumb">
-      {breadcrumbs.map((level, idx) => (
-        <Typography variant="button"
-          key={idx}
-          color="inherit"
-          onClick={() => { selectionHandler(level.node) }}>
-          {level.label}
-        </Typography>
-      )
-      )
-      }
-    </Breadcrumbs>
-  )
+  if (path.length > 0) {
+    // Define the node which is bound to the breadcrumbs element
+    path.forEach((el, idx) => {
+      const node: INode | undefined = data.find(node => (node && node.path) ? node.path.concat(node.name).toString() === path.slice(0, idx + 1).toString() : false)
+      const level: ILevel = { "label": el, "node": node, }
+      breadcrumbs.push(level)
+    })
+    // Display the breadcrumb element
+    return (
+      <Breadcrumbs
+        separator={<NavigateNextIcon fontSize="small" />}
+        aria-label="breadcrumb">
+        {breadcrumbs.map((level, idx) => (
+          <Typography variant="button"
+            key={idx}
+            color="inherit"
+            onClick={() => { selectionHandler(level.node!) }}>
+            {level.label}
+          </Typography>
+        )
+        )
+        }
+      </Breadcrumbs>
+    )
+  } else {
+    return null
+  }
 }
 
 export default Breadcrumb

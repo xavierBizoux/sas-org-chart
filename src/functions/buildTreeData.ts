@@ -16,9 +16,10 @@ const buildTreeData = (vaData: IVAData) => {
   // Add a fake root element if data has more than one root element
   if (roots.length > 1) {
     vaData.data.forEach(el => el.unshift("Root"))
+    vaData.columns.unshift({name: "root", label:"root", type:"string"})
   }
   // Define the number of levels in the tree
-  const levels = defineLevels(vaData)
+  const levels = defineLevels(vaData, roots.length)
   // Transform the data from VA
   vaData.data.forEach((el, idx) => {
     for (let i = 0; i < levels; i++) {
@@ -33,7 +34,8 @@ const buildTreeData = (vaData: IVAData) => {
         "parentId": parent?.id || 0,
         "rowNum": idx,
         "level": i,
-        "path": path
+        "path": path,
+        "children": []
       }
       if (!data.find(el => node.name === el.name && node.parentId === el.parentId)) {
         data.push(node)

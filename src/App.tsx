@@ -12,10 +12,10 @@ import IVASelection from './interfaces/IVASelection'
 
 const App = () => {
   const [data, setData] = useState<INode[]>([])
-  const [parent, setParent] = useState<INode | undefined>()
-  const [children, setChildren] = useState<INode[] | undefined>()
+  const [parent, setParent] = useState<INode>({} as INode)
+  const [children, setChildren] = useState<INode[]>([])
   const [vaData, setVaData] = useState<IVAData>({} as IVAData)
-  const [selectedNode, setSelectedNode] = useState<INode | undefined>()
+  const [selectedNode, setSelectedNode] = useState<INode>()
 
   useEffect(() => {
     // Function to handle data received from VA
@@ -39,7 +39,7 @@ const App = () => {
 
   useEffect(() => {
     // Process VA data and set the top level of the tree
-    const node: INode | undefined = data.find(node => node.parentId === 0)
+    const node: INode = data.find(node => node.parentId === 0)!
     setParent(node)
     setSelectedNode(node)
   }, [data])
@@ -67,29 +67,34 @@ const App = () => {
   // Function which identify the node which was expanded in the tree
   const navigationHandler = (id: number) => {
     const node = data.find(node => node.id === id)
-    setParent(node)
+    setParent(node!)
     setSelectedNode(node)
   }
 
   // Define the layout of the elements
   return (
     <Box>
-      {parent?.path ? <Breadcrumb path={parent.path} selectionHandler={setParent} data={data} ></Breadcrumb> : null}
+      <Breadcrumb path={parent?.path || []} selectionHandler={setParent} data={data} ></Breadcrumb>
       <Grid container
         direction="column"
         alignItems="center"
         sx={{ minWidth: "100vw", maxWidth: "100vw" }} >
-        {parent ? <Grid container direction="column" alignItems="center" sx={{ minWidth: "100vw", maxWidth: "100vw" }}><Node node={parent} navigationHandler={navigationHandler} selectionHandler={setSelectedNode} isTop={true} isSelected={selectedNode === parent}></Node></Grid> : null}
-        <Divider>{vaData?.columns && parent ? vaData?.columns[parent?.level + 1]['label'] : null}</Divider>
-        <Grid container
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ borderColor: "secondary.main", border: 1, borderRadius: 3 }}>
-          {children ? children.map(node => <Node node={node} navigationHandler={navigationHandler} selectionHandler={setSelectedNode} isTop={false} key={node.id} isSelected={selectedNode === node}></Node>) : null}
+        <Grid container direction="column" alignItems="center" sx={{ minWidth: "100vw", maxWidth: "100vw" }}>
+          <Node node={parent}
+            navigationHandler={navigationHandler}
+            selectionHandler={setSelectedNode}
+            isTop={true}
+            isSelected={selectedNode === parent}
+          ></Node>
         </Grid>
+        { parent?.level && vaData  ? <Divider>{vaData.columns[parent.level +1]['label']}</Divider> : null}
+        {children && children.length > 0?
+          <Grid container direction="row" alignItems="center" justifyContent="center" sx={{ borderColor: "secondary.main", border: 1, borderRadius: 3 }}>
+            {children ? children.map(node => <Node node={node} navigationHandler={navigationHandler} selectionHandler={setSelectedNode} isTop={false} key={node.id} isSelected={selectedNode === node}></Node>) : null}
+          </Grid>
+          : null}
       </Grid>
-    </Box>
+    </Box >
   )
 }
 

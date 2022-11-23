@@ -21,39 +21,43 @@ const Node = ({ node, navigationHandler, selectionHandler, isTop, isSelected }: 
     borderColor: isSelected ? "secondary.main" : 0
   }
   // Display the node
-  return (
-    <Card raised={isSelected} sx={cardStyle} onClick={() => selectionHandler(node)}>
-      {isTop && node.parentId !== 0 ?
-        <CardActions sx={{ display: "flex", justifyContent: "center", margin: 0, padding: 0 }} >
-          <IconButton size="small" color="primary" onClick={() => navigationHandler(node.parentId)}>
-            <ExpandLessIcon />
-          </IconButton>
-        </CardActions>
-        : null
-      }
-      <CardContent sx={{ margin: 0, padding: 0 }}>
-        <Grid container direction="column" alignItems="center" sx={{ width: "100%" }}>
-          <Grid item sx={{ width: "100%", padding: 1, color: "white", bgcolor: "primary.main" }}>
-            <Tooltip title={node.name}>
-              <Typography variant="h5" align="center" noWrap sx={{ padding: 2, maxWidth: "100cw" }}>
-                {node.name}
-              </Typography>
-            </Tooltip>
-          </Grid>
-        </Grid>
-      </CardContent>
-      <CardActions sx={{ display: "flex", justifyContent: "center", margin: 0, padding: 0 }} >
-        {!isTop && node?.children && node?.children?.length > 0 ?
-          <IconButton size="small" color="primary" sx={{ padding: 0, margin: 0 }} onClick={() => navigationHandler(node.id)}>
-            <Badge badgeContent={node?.children?.length} color="secondary" sx={{ px: 1 }} >
-              <ExpandMoreIcon />
-            </Badge>
-          </IconButton>
+  if (node && node.id) {
+    return (
+      <Card raised={isSelected} sx={cardStyle} onClick={() => selectionHandler(node)}>
+        {isTop && node.parentId !== 0 ?
+          <CardActions sx={{ display: "flex", justifyContent: "center", margin: 0, padding: 0 }} >
+            <IconButton size="small" color="primary" onClick={() => navigationHandler(node.parentId)}>
+              <ExpandLessIcon />
+            </IconButton>
+          </CardActions>
           : null
         }
-      </CardActions>
-    </Card>
-  )
+        <CardContent sx={{ margin: 0, padding: 0 }}>
+          <Grid container direction="column" alignItems="center" sx={{ width: "100%" }}>
+            <Grid item sx={{ width: "100%", padding: 1, color: "white", bgcolor: "primary.main" }}>
+              <Tooltip title={node.name}>
+                <Typography variant="h5" align="center" noWrap sx={{ padding: 2, maxWidth: "100cw" }}>
+                  {node.name}
+                </Typography>
+              </Tooltip>
+            </Grid>
+          </Grid>
+        </CardContent>
+        <CardActions sx={{ display: "flex", justifyContent: "center", margin: 0, padding: 0 }} >
+        {!isTop && node.children.length > 0 ?
+            <IconButton size="small" color="primary" sx={{ padding: 0, margin: 0 }} onClick={() => navigationHandler(node.id)}>
+              <Badge badgeContent={node.children.length} color="secondary" sx={{ px: 1 }} >
+                <ExpandMoreIcon />
+              </Badge>
+            </IconButton>
+          : null
+        }
+        </CardActions>
+      </Card>
+    )
+  } else {
+    return null
+  }
 }
 
 export default Node
