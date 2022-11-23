@@ -16,6 +16,7 @@ const App = () => {
   const [children, setChildren] = useState<INode[]>([])
   const [vaData, setVaData] = useState<IVAData>({} as IVAData)
   const [selectedNode, setSelectedNode] = useState<INode>()
+  const [dividerLabel, setDividerLabel] = useState<string>()
 
   useEffect(() => {
     // Function to handle data received from VA
@@ -46,11 +47,12 @@ const App = () => {
 
   useEffect(() => {
     // When parent state changes, update the children state
-    if (parent) {
+    if (parent && vaData.columns) {
       setChildren(parent.children)
       setSelectedNode(parent)
+      setDividerLabel(vaData.columns[parent.level + 1]['label'])
     }
-  }, [parent])
+  }, [parent,vaData.columns])
 
   useEffect(() => {
     // When selected node changes, send the selection information to VA
@@ -87,8 +89,8 @@ const App = () => {
             isSelected={selectedNode === parent}
           ></Node>
         </Grid>
-        { vaData  ? <Divider>{vaData.columns[parent.level +1]['label']}</Divider> : null}
-        {children && children.length > 0?
+        <Divider>{dividerLabel}</Divider>
+        {children && children.length > 0 ?
           <Grid container direction="row" alignItems="center" justifyContent="center" sx={{ borderColor: "secondary.main", border: 1, borderRadius: 3 }}>
             {children ? children.map(node => <Node node={node} navigationHandler={navigationHandler} selectionHandler={setSelectedNode} isTop={false} key={node.id} isSelected={selectedNode === node}></Node>) : null}
           </Grid>

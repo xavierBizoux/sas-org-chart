@@ -19,7 +19,7 @@ const buildTreeData = (vaData: IVAData) => {
     vaData.columns.unshift({name: "root", label:"root", type:"string"})
   }
   // Define the number of levels in the tree
-  const levels = defineLevels(vaData, roots.length)
+  const levels = defineLevels(vaData)
   // Transform the data from VA
   vaData.data.forEach((el, idx) => {
     for (let i = 0; i < levels; i++) {
@@ -47,6 +47,7 @@ const buildTreeData = (vaData: IVAData) => {
   data.forEach(node => {
     node.children = data.filter(el => node.id === el.parentId).sort((a, b) => a.name < b.name ? -1 : 1)
   })
+  console.log(data)
   return data
 }
 

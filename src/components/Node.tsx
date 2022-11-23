@@ -35,7 +35,7 @@ const Node = ({ node, navigationHandler, selectionHandler, isTop, isSelected }: 
         <CardContent sx={{ margin: 0, padding: 0 }}>
           <Grid container direction="column" alignItems="center" sx={{ width: "100%" }}>
             <Grid item sx={{ width: "100%", padding: 1, color: "white", bgcolor: "primary.main" }}>
-              <Tooltip title={node.name}>
+              <Tooltip title={node.name} placement="top">
                 <Typography variant="h5" align="center" noWrap sx={{ padding: 2, maxWidth: "100cw" }}>
                   {node.name}
                 </Typography>

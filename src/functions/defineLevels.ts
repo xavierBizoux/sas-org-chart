@@ -2,9 +2,9 @@ import IVAData from "../interfaces/IVAData"
 import sendMessageToVA from "./sendMessageToVA"
 
 // Function to define the number of levels in the tree
-const defineLevels = (data: IVAData, rootLength: number) => {
+const defineLevels = (data: IVAData) => {
   // Initialize the number of levels
-  let levels: number = rootLength > 1 ? 1 : 0
+  let levels: number =  0
   // Check columns are categorical and define the number of levels in the tree
   data.columns.every((col, idx) => {
     if (col.type === "string") {
